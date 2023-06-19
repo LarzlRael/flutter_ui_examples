@@ -8,19 +8,28 @@ class ZapatoDescripcion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30),
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             SizedBox(height: 20),
             Text(
               this.titulo,
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+              style: textTheme.titleLarge.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            SizedBox(height: 20),
-            Text(this.descripcion, style: TextStyle(color:Colors.black54,height: 1.6)),
+            SizedBox(height: 15),
+            Text(
+              this.descripcion,
+              style: textTheme.bodyMedium.copyWith(
+                color: Colors.black54,
+                height: 1.6,
+              ),
+            ),
           ],
         ),
       ),

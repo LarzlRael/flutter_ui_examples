@@ -11,10 +11,8 @@ class ZapatoModel with ChangeNotifier {
   }
 
   double get talla => this._talla;
-  set talla(double valor) {
+  set setTalla(double valor) {
     this._talla = valor;
     notifyListeners();
   }
-
-
 }

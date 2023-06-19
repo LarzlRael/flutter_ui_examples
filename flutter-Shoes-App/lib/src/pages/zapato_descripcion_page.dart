@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,30 +12,34 @@ class ZapatoDescPage extends StatelessWidget {
 
     return Scaffold(
       body: Column(
-        children: <Widget>[
+        children: [
           Stack(
-            children: <Widget>[
+            children: [
               //? aplicando el hero animation
               Hero(tag: 'zapato-1', child: ZapatoSizePreview(fullScreen: true)),
               Positioned(
-                  top: 80,
-                  child: FloatingActionButton(
-                    child:
-                        Icon(Icons.chevron_left, color: Colors.white, size: 60),
-                    onPressed: () {
-                      cambiarStatusLight();
-                      Navigator.pop(context);
-                    },
-                    elevation: 0,
-                    highlightElevation: 0,
-                    backgroundColor: Colors.transparent,
-                  ))
+                top: 80,
+                child: FloatingActionButton(
+                  child: Icon(
+                    Icons.chevron_left,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                  onPressed: () {
+                    cambiarStatusLight();
+                    Navigator.pop(context);
+                  },
+                  elevation: 0,
+                  highlightElevation: 0,
+                  backgroundColor: Colors.transparent,
+                ),
+              )
             ],
           ),
           Expanded(
               child: SingleChildScrollView(
             child: Column(
-              children: <Widget>[
+              children: [
                 ZapatoDescripcion(
                   titulo: 'Nike Air Max 720',
                   descripcion:
@@ -88,15 +90,17 @@ class _BotonSombreado extends StatelessWidget {
       width: 55,
       height: 55,
       decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black12,
-                spreadRadius: -5,
-                blurRadius: 20,
-                offset: Offset(0, 10))
-          ]),
+        shape: BoxShape.circle,
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            spreadRadius: -5,
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -107,31 +111,55 @@ class _ColoresYMas extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                    left: 90,
-                    child: _BotonColor(
-                        Color(0xffc6d642), 4, 'assets/img/verde.png')),
-                Positioned(
-                    left: 60,
-                    child: _BotonColor(
-                        Color(0xffffad29), 3, 'assets/img/amarillo.png')),
-                Positioned(
-                    left: 30,
-                    child: _BotonColor(
-                        Color(0xff2099f1), 2, 'assets/img/azul.png')),
-                _BotonColor(Color(0xff364d56), 1, 'assets/img/negro.png'),
+        children: [
+          SizedBox(
+            height: 100,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true, // Agrega esta línea
+              children: [
+                Align(
+                  widthFactor: 0.6,
+                  child: _BotonColor(
+                    Color(0xffc6d642),
+                    4,
+                    'assets/img/verde.png',
+                  ),
+                ),
+                Align(
+                  widthFactor: 0.6,
+                  child: _BotonColor(
+                    Color(0xffffad29),
+                    3,
+                    'assets/img/amarillo.png',
+                  ),
+                ),
+                Align(
+                  widthFactor: 0.6,
+                  child: _BotonColor(
+                    Color(0xff2099f1),
+                    2,
+                    'assets/img/azul.png',
+                  ),
+                ),
+                Align(
+                  widthFactor: 0.6,
+                  child: _BotonColor(
+                    Color(0xff364d56),
+                    1,
+                    'assets/img/negro.png',
+                  ),
+                ),
               ],
             ),
           ),
+          Spacer(),
           BotonNaranja(
-              text: 'More related items',
-              alto: 30,
-              ancho: 170,
-              color: Color(0xffffc675))
+            text: 'More related items',
+            height: 30,
+            width: 170,
+            color: Color(0xffffc675),
+          ),
         ],
       ),
     );
@@ -151,18 +179,24 @@ class _BotonColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final zapatoModel = Provider.of<ZapatoModel>(
+      context,
+      listen: false,
+    );
     return FadeInLeft(
       delay: Duration(milliseconds: this.index * 100),
       duration: Duration(milliseconds: 300),
       child: GestureDetector(
         onTap: () {
-          final zapatoModel = Provider.of<ZapatoModel>(context, listen: false);
           zapatoModel.assetImage = this.urlImagen;
         },
         child: Container(
           width: 45,
           height: 45,
-          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
         ),
       ),
     );
@@ -178,16 +212,21 @@ class _BuyNow extends StatelessWidget {
         margin: EdgeInsets.only(top: 20),
         child: Row(
           children: <Widget>[
-            Text('\$180.0',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+            Text(
+              '\$180.0',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Spacer(),
             Bounce(
               delay: Duration(seconds: 1),
               from: 8,
               child: BotonNaranja(
                 text: 'Buy Now',
-                ancho: 120,
-                alto: 40,
+                width: 120,
+                height: 40,
               ),
             )
           ],

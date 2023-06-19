@@ -6,6 +6,7 @@ class CustomAppBar extends StatelessWidget {
   CustomAppBar({@required this.texto});
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       top: true,
       bottom: false,
@@ -16,9 +17,14 @@ class CustomAppBar extends StatelessWidget {
           width: double.infinity,
           // color: Colors.red,
           child: Row(
-            children: <Widget>[
-              Text(texto,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700)),
+            children: [
+              Text(
+                texto,
+                style: textTheme.titleLarge.copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               Spacer(),
               Icon(Icons.search, size: 30)
             ],

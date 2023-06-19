@@ -6,7 +6,11 @@ import 'package:shoes_app/src/pages/zapato_page.dart';
 
 void main() => {
       runApp(MultiProvider(
-        providers: [ChangeNotifierProvider(create: (_) => new ZapatoModel())],
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => new ZapatoModel(),
+          ),
+        ],
         child: MyApp(),
       ))
     };

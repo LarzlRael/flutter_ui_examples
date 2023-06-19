@@ -14,9 +14,11 @@ class ZapatoSizePreview extends StatelessWidget {
       onTap: () {
         if (!this.fullScreen) {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => ZapatoDescPage()));
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => ZapatoDescPage(),
+            ),
+          );
         }
       },
       child: Padding(
@@ -35,13 +37,13 @@ class ZapatoSizePreview extends StatelessWidget {
                     bottomLeft: Radius.circular(50),
                     bottomRight: Radius.circular(50),
                     topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
+                    topRight: Radius.circular(40),
+                  ),
           ),
           child: Column(
-            children: <Widget>[
+            children: [
               // ? zapato con sombra
               _ZapatoSombra(),
-
               if (!fullScreen) _ZapatoTalla(),
             ],
           ),
@@ -81,14 +83,28 @@ class _ZapatoSSombra extends StatelessWidget {
         width: 230,
         height: 120,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            boxShadow: [BoxShadow(color: Color(0xffEAA14E), blurRadius: 40)]),
+          borderRadius: BorderRadius.circular(100),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xffEAA14E),
+              blurRadius: 40,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class _ZapatoTalla extends StatelessWidget {
+  final tallas = [
+    7.0,
+    7.5,
+    8.0,
+    8.5,
+    9.0,
+    9.5,
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -96,14 +112,7 @@ class _ZapatoTalla extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _TallaZapatoCaja(7),
-            _TallaZapatoCaja(7.5),
-            _TallaZapatoCaja(8),
-            _TallaZapatoCaja(8.5),
-            _TallaZapatoCaja(9),
-            _TallaZapatoCaja(9.5),
-          ],
+          children: tallas.map((numero) => _TallaZapatoCaja(numero)).toList(),
         ),
       ),
     );
@@ -116,22 +125,24 @@ class _TallaZapatoCaja extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final zapatoModel = Provider.of<ZapatoModel>(context);
+    final zapatoModel = context.watch<ZapatoModel>();
 
     return GestureDetector(
       onTap: () {
-        final zapatoModel = Provider.of<ZapatoModel>(context, listen: false);
-        zapatoModel.talla = this.numero;
+        zapatoModel.setTalla = this.numero;
       },
       child: Container(
         alignment: Alignment.center,
-        child: Text('${numero.toString().replaceAll('.0', '')}',
-            style: TextStyle(
-                color: (this.numero == zapatoModel.talla)
-                    ? Colors.white
-                    : Color(0xffF1a23a),
-                fontSize: 16,
-                fontWeight: FontWeight.bold)),
+        child: Text(
+          '${numero.toString().replaceAll('.0', '')}',
+          style: TextStyle(
+            color: (this.numero == zapatoModel.talla)
+                ? Colors.white
+                : Color(0xffF1a23a),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         width: 40,
         height: 40,
         decoration: BoxDecoration(
