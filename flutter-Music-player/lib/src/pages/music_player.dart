@@ -11,14 +11,16 @@ class MusicPlayerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: <Widget>[
+        children: [
           BackGround(),
           Column(
-            children: <Widget>[
+            children: [
               CustomAppBar(),
               ImagenDiscoDuration(),
               TituloPlay(),
-              Expanded(child: Lyrics())
+              Expanded(
+                child: Lyrics(),
+              )
             ],
           ),
         ],
@@ -36,14 +38,16 @@ class BackGround extends StatelessWidget {
       width: double.infinity,
       height: screenSize.height * 0.8,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60)),
-          gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.center,
-              colors: [
-                Color(0xff33333e),
-                Color(0xff201e28),
-              ])),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60)),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.center,
+          colors: [
+            Color(0xff33333e),
+            Color(0xff201e28),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -53,17 +57,25 @@ class Lyrics extends StatelessWidget {
   Widget build(BuildContext context) {
     final lyrics = getLyrics();
     return Container(
-        child: ListWheelScrollView(
-            physics: BouncingScrollPhysics(),
-            itemExtent: 42,
-            diameterRatio: 1.5,
-            children: lyrics
-                .map((linea) => Text(
-                      linea,
-                      style: TextStyle(
-                          fontSize: 20, color: Colors.white.withOpacity(0.6)),
-                    ))
-                .toList()));
+      child: ListWheelScrollView(
+        physics: BouncingScrollPhysics(),
+        itemExtent: 42,
+        diameterRatio: 1.5,
+        children: lyrics
+            .map(
+              (linea) => Text(
+                linea,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white.withOpacity(
+                    0.6,
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 }
 
@@ -80,7 +92,7 @@ class _TituloPlayState extends State<TituloPlay>
   AnimationController playAnimation;
 
   //? para poder usar el paquete de musica
-  final assetAudioPlayer = new AssetsAudioPlayer();
+  /* final assetAudioPlayer = new AssetsAudioPlayer(); */
 
   @override
   void initState() {
@@ -96,72 +108,82 @@ class _TituloPlayState extends State<TituloPlay>
   }
 
   void open() {
-    final audioPlayerMode =
-        Provider.of<AudioPlayerMode>(context, listen: false);
-    //? cargamdo el audio
+    final audioPlayerModel =
+        Provider.of<AudioPlayerModel>(context, listen: false);
+    //? cargando el audio
 
     //assetAudioPlayer.new.open('assets/Breaking-Benjamin-Far-Away.mp3');
-    assetAudioPlayer.open(Audio('assets/Breaking-Benjamin-Far-Away.mp3'));
+    audioPlayerModel.assetsAudioPlayer.open(
+      Audio(
+        'assets/Breaking-Benjamin-Far-Away.mp3',
+      ),
+    );
 
-    assetAudioPlayer.currentPosition.listen((duration) {
-      audioPlayerMode.current = duration;
+    audioPlayerModel.assetsAudioPlayer.currentPosition.listen((duration) {
+      audioPlayerModel.current = duration;
     });
 
     // assetAudioPlayer.current.listen((playingAudio) {
     //   audioPlayerMode.songDuration = playingAudio.duration;
     // });
-    assetAudioPlayer.current.listen((event) {
-      audioPlayerMode.songDuration = event.audio.duration;
+    audioPlayerModel.assetsAudioPlayer.current.listen((event) {
+      audioPlayerModel.songDuration = event.audio.duration;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final audioPLayerModel = context.read<AudioPlayerModel>();
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30),
       margin: EdgeInsets.only(top: 40),
-      child: Row(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Text('Far Away',
-                  style: TextStyle(
-                      fontSize: 30, color: Colors.white.withOpacity(0.8))),
-              Text('-Breaking Benjamin',
-                  style: TextStyle(
-                      fontSize: 15, color: Colors.white.withOpacity(0.5))),
-            ],
+      child: ListTile(
+        title: Text(
+          'Far Away',
+          style: textTheme.headlineSmall.copyWith(
+            color: Colors.white.withOpacity(
+              0.8,
+            ),
           ),
-          Spacer(),
-          FloatingActionButton(
-            elevation: 0,
-            highlightElevation: 0,
-            backgroundColor: Color(0xfff8cb58),
-            child: AnimatedIcon(
-                icon: AnimatedIcons.play_pause, progress: playAnimation),
-            onPressed: () {
-              final audioPLayerModel =
-                  Provider.of<AudioPlayerMode>(context, listen: false);
+        ),
+        subtitle: Text(
+          'Breaking Benjamin',
+          style: TextStyle(
+            fontSize: 15,
+            color: Colors.white.withOpacity(
+              0.5,
+            ),
+          ),
+        ),
 
-              if (this.isPlaying) {
-                playAnimation.reverse();
-                this.isPlaying = false;
-                audioPLayerModel.controller.stop();
-              } else {
-                playAnimation.forward();
-                this.isPlaying = true;
-                audioPLayerModel.controller.repeat();
-              }
-
-              if (firstTime) {
-                this.open();
-                firstTime = false;
-              } else {
-                assetAudioPlayer.playOrPause();
-              }
-            },
-          )
-        ],
+        /* Spacer(), */
+        trailing: FloatingActionButton(
+          elevation: 0,
+          highlightElevation: 0,
+          backgroundColor: Color(0xfff8cb58),
+          child: AnimatedIcon(
+            icon: AnimatedIcons.play_pause,
+            progress: playAnimation,
+          ),
+          onPressed: () {
+            if (this.isPlaying) {
+              playAnimation.reverse();
+              this.isPlaying = false;
+              audioPLayerModel.controller.stop();
+            } else {
+              playAnimation.forward();
+              this.isPlaying = true;
+              audioPLayerModel.controller.repeat();
+            }
+            if (firstTime) {
+              this.open();
+              firstTime = false;
+            } else {
+              audioPLayerModel.assetsAudioPlayer.playOrPause();
+            }
+          },
+        ),
       ),
     );
   }
@@ -170,14 +192,15 @@ class _TituloPlayState extends State<TituloPlay>
 class ImagenDiscoDuration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final audioPlayerModel = context.read<AudioPlayerModel>();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30),
       margin: EdgeInsets.only(top: 70),
       child: Row(
-        children: <Widget>[
+        children: [
           ImagenDisco(),
           SizedBox(width: 17),
-          BarraProgreso(),
+          BarraProgreso(audioPlayerModel: audioPlayerModel),
           SizedBox(width: 17),
         ],
       ),
@@ -186,24 +209,38 @@ class ImagenDiscoDuration extends StatelessWidget {
 }
 
 class BarraProgreso extends StatelessWidget {
+  final AudioPlayerModel audioPlayerModel;
+  final width = 5.0;
+
+  const BarraProgreso({
+    Key key,
+    @required this.audioPlayerModel,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final style = TextStyle(color: Colors.white.withOpacity(0.4));
-
-    final audioPlayerModel = Provider.of<AudioPlayerMode>(context);
+    final audioPlayerModel = context.watch<AudioPlayerModel>();
     final porcentaje = audioPlayerModel.porcentaje;
 
     return Container(
       child: Column(
         children: <Widget>[
           Text('${audioPlayerModel.songTotalduration}', style: style),
-          SizedBox(height: 10),
-          Stack(
+          /* Stack(
             children: <Widget>[
-              Container(
-                width: 3,
-                height: 230,
-                color: Colors.white.withOpacity(0.1),
+              GestureDetector(
+                onHorizontalDragUpdate: (details) {
+                  RenderBox box = context.findRenderObject() as RenderBox;
+                  final position = box.globalToLocal(details.globalPosition);
+                  final width = box.size.width;
+                  final porcentaje = (position.dx / width).clamp(0.0, 1.0);
+                  audioPlayerModel.setPorcentaje = porcentaje;
+                },
+                child: Container(
+                  width: 3,
+                  height: 230,
+                  color: Colors.white.withOpacity(0.1),
+                ),
               ),
               Positioned(
                 bottom: 0,
@@ -213,6 +250,33 @@ class BarraProgreso extends StatelessWidget {
                     color: Colors.white.withOpacity(0.1)),
               )
             ],
+          ), */
+          RotatedBox(
+            quarterTurns: 3,
+            child: SliderTheme(
+              data: SliderThemeData(
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
+                trackHeight: 2,
+              ),
+              child: Slider.adaptive(
+                activeColor: Color(0xfff8cb58),
+                inactiveColor: Colors.white.withOpacity(0.3),
+                value: porcentaje,
+                onChangeEnd: (value) {
+                  audioPlayerModel.setPorcentaje = value;
+                  audioPlayerModel.assetsAudioPlayer.seek(
+                    Duration(
+                      milliseconds:
+                          (value * audioPlayerModel.songDuration.inMilliseconds)
+                              .round(),
+                    ),
+                  );
+                },
+                onChanged: (double value) {
+                  audioPlayerModel.setPorcentaje = value;
+                },
+              ),
+            ),
           ),
           SizedBox(height: 10),
           Text('${audioPlayerModel.currentSecond}', style: style),
@@ -225,7 +289,7 @@ class BarraProgreso extends StatelessWidget {
 class ImagenDisco extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final audioPlayerModel = Provider.of<AudioPlayerMode>(context);
+    final audioPlayerModel = Provider.of<AudioPlayerModel>(context);
 
     return Container(
       padding: EdgeInsets.all(20),
@@ -235,15 +299,18 @@ class ImagenDisco extends StatelessWidget {
         borderRadius: BorderRadius.circular(200),
         child: Stack(
           alignment: Alignment.center,
-          children: <Widget>[
+          children: [
             SpinPerfect(
-              duration: Duration(seconds: 10),
               // duration: Duration(seconds: audioPlayerModel.songDuration.inSeconds),
+              duration: Duration(seconds: 1),
               infinite: true,
               manualTrigger: true,
+              animate: audioPlayerModel.playing,
               controller: (animationController) =>
                   audioPlayerModel.controller = animationController,
-              child: Image(image: AssetImage('assets/aurora.jpg')),
+              child: Image(
+                image: AssetImage('assets/aurora.jpg'),
+              ),
             ),
             Container(
               width: 25,

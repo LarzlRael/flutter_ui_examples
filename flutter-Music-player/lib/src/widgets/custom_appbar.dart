@@ -4,22 +4,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final topFromDevice = MediaQuery.of(context).padding.top;
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: topFromDevice),
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Row(
-          children: <Widget>[
+          children: [
             Icon(FontAwesomeIcons.chevronCircleLeft),
             Spacer(),
             Icon(FontAwesomeIcons.commentAlt),
-            SizedBox(
-              width: 20,
-            ),
+            SizedBox(width: 20),
             Icon(FontAwesomeIcons.headphonesAlt),
-            SizedBox(
-              width: 20,
-            ),
+            SizedBox(width: 20),
             Icon(FontAwesomeIcons.externalLinkAlt),
           ],
         ),

@@ -1,18 +1,24 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
-class AudioPlayerMode with ChangeNotifier {
+class AudioPlayerModel with ChangeNotifier {
+  AssetsAudioPlayer assetsAudioPlayer = new AssetsAudioPlayer();
   bool _playing = false;
-  Duration _songDuration  = new Duration(milliseconds: 0);
-  Duration _current       = new Duration(milliseconds: 0);
-
+  Duration _songDuration = Duration(milliseconds: 0);
+  Duration _current = Duration(milliseconds: 0);
 
   String get songTotalduration => this.printDuration(this._songDuration);
-  String get currentSecond     => this.printDuration(this._current);
-
+  String get currentSecond => this.printDuration(this._current);
 
   double get porcentaje => (this._songDuration.inSeconds > 0)
       ? this._current.inSeconds / this._songDuration.inSeconds
       : 0;
+
+  set setPorcentaje(double valor) {
+    this._current =
+        Duration(seconds: (this._songDuration.inSeconds * valor).round());
+    notifyListeners();
+  }
 
   AnimationController _controller;
 

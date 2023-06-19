@@ -12,14 +12,15 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => new AudioPlayerMode(),
+          create: (_) => new AudioPlayerModel(),
         )
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Music Theme',
-          theme: miTema,
-          home: MusicPlayerPage()),
+        debugShowCheckedModeBanner: false,
+        title: 'Music Theme',
+        theme: miTema,
+        home: MusicPlayerPage(),
+      ),
     );
   }
 }
