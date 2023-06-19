@@ -61,7 +61,7 @@ class _ZapatoSombra extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(50),
       child: Stack(
-        children: <Widget>[
+        children: [
           Positioned(
             bottom: 20,
             right: 0,

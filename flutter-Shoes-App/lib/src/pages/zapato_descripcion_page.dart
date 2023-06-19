@@ -62,19 +62,65 @@ class ZapatoDescPage extends StatelessWidget {
   }
 }
 
-class _BotonesLikeCartSettings extends StatelessWidget {
+class _BotonesLikeCartSettings extends StatefulWidget {
+  @override
+  State<_BotonesLikeCartSettings> createState() =>
+      _BotonesLikeCartSettingsState();
+}
+
+class _BotonesLikeCartSettingsState extends State<_BotonesLikeCartSettings> {
+  int selected = 1;
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _BotonSombreado(Icon(Icons.star, color: Colors.red, size: 25)),
-          _BotonSombreado(Icon(Icons.add_shopping_cart,
-              color: Colors.grey.withOpacity(0.4), size: 25)),
-          _BotonSombreado(Icon(Icons.settings,
-              color: Colors.grey.withOpacity(0.4), size: 25)),
+        children: [
+          _BotonSombreado(
+            IconButton(
+              icon: Icon(Icons.star,
+                  color: (selected == 1)
+                      ? Colors.red
+                      : Colors.grey.withOpacity(0.4),
+                  size: 25),
+              onPressed: () {
+                setState(() {
+                  selected = 1;
+                });
+              },
+            ),
+          ),
+          _BotonSombreado(
+            IconButton(
+              icon: Icon(
+                Icons.add_shopping_cart,
+                size: 25,
+              ),
+              color:
+                  (selected == 2) ? Colors.red : Colors.grey.withOpacity(0.4),
+              onPressed: () {
+                setState(() {
+                  selected = 2;
+                });
+              },
+            ),
+          ),
+          _BotonSombreado(
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  selected = 3;
+                });
+              },
+              icon: Icon(
+                Icons.settings,
+                color:
+                    (selected == 3) ? Colors.red : Colors.grey.withOpacity(0.4),
+                size: 25,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -82,7 +128,7 @@ class _BotonesLikeCartSettings extends StatelessWidget {
 }
 
 class _BotonSombreado extends StatelessWidget {
-  final Icon icon;
+  final IconButton icon;
   const _BotonSombreado(
     this.icon,
   );
@@ -109,56 +155,58 @@ class _BotonSombreado extends StatelessWidget {
   }
 }
 
+class BotonColorD {
+  final Color color;
+  final int index;
+  final String urlImagen;
+  BotonColorD(this.color, this.index, this.urlImagen);
+}
+
 class _ColoresYMas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<BotonColorD> botonesColor = [
+      BotonColorD(
+        Color(0xffc6d642),
+        4,
+        'assets/img/verde.png',
+      ),
+      BotonColorD(
+        Color(0xffffad29),
+        3,
+        'assets/img/amarillo.png',
+      ),
+      BotonColorD(
+        Color(0xff2099f1),
+        2,
+        'assets/img/azul.png',
+      ),
+      BotonColorD(
+        Color(0xff364d56),
+        1,
+        'assets/img/negro.png',
+      ),
+    ];
     return Row(
       children: [
         SizedBox(
           height: 100,
-          child: ListView(
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            shrinkWrap: true, // Agrega esta línea
-            children: [
-              Align(
-                widthFactor: 0.6,
-                child: _BotonColor(
-                  Color(0xffc6d642),
-                  4,
-                  'assets/img/verde.png',
-                ),
+            shrinkWrap: true,
+            itemCount: botonesColor.length,
+            itemBuilder: (_, int index) => Align(
+              widthFactor: 0.6,
+              child: _BotonColor(
+                botonesColor[index],
               ),
-              Align(
-                widthFactor: 0.6,
-                child: _BotonColor(
-                  Color(0xffffad29),
-                  3,
-                  'assets/img/amarillo.png',
-                ),
-              ),
-              Align(
-                widthFactor: 0.6,
-                child: _BotonColor(
-                  Color(0xff2099f1),
-                  2,
-                  'assets/img/azul.png',
-                ),
-              ),
-              Align(
-                widthFactor: 0.6,
-                child: _BotonColor(
-                  Color(0xff364d56),
-                  1,
-                  'assets/img/negro.png',
-                ),
-              ),
-            ],
+            ),
           ),
         ),
         Spacer(),
         BotonNaranja(
           text: 'More related items',
-          height: 30,
+          height: 35,
           width: 170,
           color: Color(0xffffc675),
         ),
@@ -168,15 +216,9 @@ class _ColoresYMas extends StatelessWidget {
 }
 
 class _BotonColor extends StatelessWidget {
-  final Color color;
-  final int index;
-  final String urlImagen;
+  final BotonColorD botonColorD;
 
-  const _BotonColor(
-    this.color,
-    this.index,
-    this.urlImagen,
-  );
+  const _BotonColor(this.botonColorD);
 
   @override
   Widget build(BuildContext context) {
@@ -185,17 +227,17 @@ class _BotonColor extends StatelessWidget {
       listen: false,
     );
     return FadeInLeft(
-      delay: Duration(milliseconds: this.index * 100),
+      delay: Duration(milliseconds: this.botonColorD.index * 100),
       duration: Duration(milliseconds: 300),
       child: GestureDetector(
         onTap: () {
-          zapatoModel.assetImage = this.urlImagen;
+          zapatoModel.assetImage = this.botonColorD.urlImagen;
         },
         child: Container(
           width: 45,
           height: 45,
           decoration: BoxDecoration(
-            color: color,
+            color: this.botonColorD.color,
             shape: BoxShape.circle,
           ),
         ),
@@ -210,7 +252,7 @@ class _BuyNow extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Row(
-        children: <Widget>[
+        children: [
           Text(
             '\$180.0',
             style: TextStyle(
@@ -220,7 +262,8 @@ class _BuyNow extends StatelessWidget {
           ),
           Spacer(),
           Bounce(
-            delay: Duration(seconds: 1),
+            delay: Duration(milliseconds: 500),
+            infinite: true,
             from: 8,
             child: BotonNaranja(
               text: 'Buy Now',

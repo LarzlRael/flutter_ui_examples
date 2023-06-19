@@ -7,6 +7,7 @@ class AgregarCarritoBoton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
@@ -16,22 +17,21 @@ class AgregarCarritoBoton extends StatelessWidget {
           color: Colors.grey.withOpacity(0.10),
           borderRadius: BorderRadius.circular(100),
         ),
-        child: Row(
-          children: <Widget>[
-            SizedBox(width: 20),
-            Text(
-              '\$$monto',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              Text(
+                '\$$monto',
+                style: textTheme.titleLarge.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 26,
+                ),
               ),
-            ),
-            Spacer(),
-            BotonNaranja(
-              text: 'Add to Cart',
-            ),
-            SizedBox(width: 20)
-          ],
+              Spacer(),
+              BotonNaranja(text: 'Add to Cart'),
+            ],
+          ),
         ),
       ),
     );
