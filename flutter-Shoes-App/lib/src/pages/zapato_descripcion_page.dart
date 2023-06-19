@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoes_app/src/helpers/helpers.dart';
 import 'package:shoes_app/src/models/zapato_model.dart';
-import 'package:shoes_app/src/widgets/custom_widgets.dart';
+import 'package:shoes_app/src/widgets/widgets.dart';
 
 class ZapatoDescPage extends StatelessWidget {
   @override
@@ -38,17 +38,22 @@ class ZapatoDescPage extends StatelessWidget {
           ),
           Expanded(
               child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ZapatoDescripcion(
-                  titulo: 'Nike Air Max 720',
-                  descripcion:
-                      "The Nike Air Max 720 goes bigger than ever before with Nike's taller Air unit yet, offering more air underfoot for unimaginable, all-day comfort. Has Air Max gone too far? We hope so.",
-                ),
-                _BuyNow(),
-                _ColoresYMas(),
-                _BotonesLikeCartSettings()
-              ],
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Column(
+                children: [
+                  ZapatoDescripcion(
+                    titulo: 'Nike Air Max 720',
+                    descripcion:
+                        "The Nike Air Max 720 goes bigger than ever before with Nike's taller Air unit yet, offering more air underfoot for unimaginable, all-day comfort. Has Air Max gone too far? We hope so.",
+                  ),
+                  _BuyNow(),
+                  _ColoresYMas(),
+                  _BotonesLikeCartSettings()
+                ],
+              ),
             ),
           )),
         ],
@@ -62,7 +67,6 @@ class _BotonesLikeCartSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 30),
-      padding: EdgeInsets.symmetric(horizontal: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -108,60 +112,57 @@ class _BotonSombreado extends StatelessWidget {
 class _ColoresYMas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 100,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true, // Agrega esta línea
-              children: [
-                Align(
-                  widthFactor: 0.6,
-                  child: _BotonColor(
-                    Color(0xffc6d642),
-                    4,
-                    'assets/img/verde.png',
-                  ),
+    return Row(
+      children: [
+        SizedBox(
+          height: 100,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true, // Agrega esta línea
+            children: [
+              Align(
+                widthFactor: 0.6,
+                child: _BotonColor(
+                  Color(0xffc6d642),
+                  4,
+                  'assets/img/verde.png',
                 ),
-                Align(
-                  widthFactor: 0.6,
-                  child: _BotonColor(
-                    Color(0xffffad29),
-                    3,
-                    'assets/img/amarillo.png',
-                  ),
+              ),
+              Align(
+                widthFactor: 0.6,
+                child: _BotonColor(
+                  Color(0xffffad29),
+                  3,
+                  'assets/img/amarillo.png',
                 ),
-                Align(
-                  widthFactor: 0.6,
-                  child: _BotonColor(
-                    Color(0xff2099f1),
-                    2,
-                    'assets/img/azul.png',
-                  ),
+              ),
+              Align(
+                widthFactor: 0.6,
+                child: _BotonColor(
+                  Color(0xff2099f1),
+                  2,
+                  'assets/img/azul.png',
                 ),
-                Align(
-                  widthFactor: 0.6,
-                  child: _BotonColor(
-                    Color(0xff364d56),
-                    1,
-                    'assets/img/negro.png',
-                  ),
+              ),
+              Align(
+                widthFactor: 0.6,
+                child: _BotonColor(
+                  Color(0xff364d56),
+                  1,
+                  'assets/img/negro.png',
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Spacer(),
-          BotonNaranja(
-            text: 'More related items',
-            height: 30,
-            width: 170,
-            color: Color(0xffffc675),
-          ),
-        ],
-      ),
+        ),
+        Spacer(),
+        BotonNaranja(
+          text: 'More related items',
+          height: 30,
+          width: 170,
+          color: Color(0xffffc675),
+        ),
+      ],
     );
   }
 }
@@ -206,31 +207,28 @@ class _BotonColor extends StatelessWidget {
 class _BuyNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Row(
-          children: <Widget>[
-            Text(
-              '\$180.0',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Row(
+        children: <Widget>[
+          Text(
+            '\$180.0',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
             ),
-            Spacer(),
-            Bounce(
-              delay: Duration(seconds: 1),
-              from: 8,
-              child: BotonNaranja(
-                text: 'Buy Now',
-                width: 120,
-                height: 40,
-              ),
-            )
-          ],
-        ),
+          ),
+          Spacer(),
+          Bounce(
+            delay: Duration(seconds: 1),
+            from: 8,
+            child: BotonNaranja(
+              text: 'Buy Now',
+              width: 120,
+              height: 40,
+            ),
+          ),
+        ],
       ),
     );
   }
