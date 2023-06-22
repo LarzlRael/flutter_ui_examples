@@ -58,8 +58,11 @@ class _ZapatoSombra extends StatelessWidget {
   Widget build(BuildContext context) {
     final zapatoModel = Provider.of<ZapatoModel>(context);
 
-    return Padding(
-      padding: EdgeInsets.all(50),
+    final size = 300 / zapatoModel.talla;
+
+    return Container(
+      /* padding calc by size */
+      padding: EdgeInsets.all(size),
       child: Stack(
         children: [
           Positioned(
@@ -67,7 +70,11 @@ class _ZapatoSombra extends StatelessWidget {
             right: 0,
             child: _ZapatoSSombra(),
           ),
-          Image(image: AssetImage(zapatoModel.assetImage))
+          Image(
+            image: AssetImage(
+              zapatoModel.assetImage,
+            ),
+          )
         ],
       ),
     );
@@ -126,7 +133,7 @@ class _TallaZapatoCaja extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final zapatoModel = context.watch<ZapatoModel>();
-
+    final isSelected = this.numero == zapatoModel.talla;
     return GestureDetector(
       onTap: () {
         zapatoModel.setTalla = this.numero;
@@ -136,22 +143,18 @@ class _TallaZapatoCaja extends StatelessWidget {
         child: Text(
           '${numero.toString().replaceAll('.0', '')}',
           style: TextStyle(
-            color: (this.numero == zapatoModel.talla)
-                ? Colors.white
-                : Color(0xffF1a23a),
-            fontSize: 16,
+            color: isSelected ? Colors.white : Color(0xffF1a23a),
+            fontSize: isSelected ? 20 : 16,
             fontWeight: FontWeight.bold,
           ),
         ),
-        width: 40,
-        height: 40,
+        width: isSelected ? 55 : 40,
+        height: isSelected ? 55 : 40,
         decoration: BoxDecoration(
-          color: (this.numero == zapatoModel.talla)
-              ? Color(0xffF1a23a)
-              : Colors.white,
+          color: (isSelected) ? Color(0xffF1a23a) : Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            if (this.numero == zapatoModel.talla)
+            if (isSelected)
               BoxShadow(
                 color: Color(0xff1a23a),
                 blurRadius: 10,
